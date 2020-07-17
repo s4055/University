@@ -1,0 +1,1968 @@
+# Serial통신
+
+void setup() {
+	Serial.begin(보드레이트값);
+
+}
+
+void loop() {
+	Serial.println("Hello Arduino!"); // Hello Arduino! 출력
+	delay(1000);
+
+}
+
+====================
+# digital 기본형
+
+void setup() {
+	pinMode(13,OUTPUT);
+
+}
+
+void loop() {
+	digitalWrite(13,1);
+	delay(1000);
+}
+
+====================
+# serial 통신
+
+void setup() {
+	pinMode(13,1);
+	Serial.begin(9600);
+}
+
+void loop() {
+	if(Serial.available()) // 시리얼 통신이 가능한 경우
+	{
+		char ch = Serial.read(); // 시리얼 데이터를 읽음
+		if(ch == 's')
+		{
+			digitalWrite(13,1);
+			Serial.println("Turned on LED"); // s 를 입력받은 경우 LED를 킴
+		}
+		else if(ch == 'q')
+		{
+			digitalWrite(13,0);
+			Serial.println("Turned off LED"); // q 를 입력받은 경우 LED를 킴
+		}
+		else
+		{
+			for(int i=1; i<=5; i++) // s와 q이외의 것을 입력하면 다섯번 깜빡임 반복
+			{
+				digitalWrite(13,1);
+				delay(100);
+				digitalWrite(13,0);
+				delay(100);
+			}
+		}
+	}
+}
+
+# 여러개를입력 (ssqsqsqqss 와 같은 방식) 하면 마지막에 입력된값 적용
+
+===================
+# serial 통신 (색상제어)
+
+void setup() {
+	pinMode(13,1);
+	pinMode(12,1);
+	pinMode(11,1);
+	Serial.begin(9600);
+}
+
+void loop() {
+	if(Serial.available()) // 시리얼 통신이 가능한 경우
+	{
+		char ch = Serial.read(); // 시리얼 데이터를 읽음
+		if(ch == 'r')
+		{
+			digitalWrite(11,1);
+			digitalWrite(12,0);
+			digitalWrite(13,0);
+			Serial.println("Turned on Red"); // r 를 입력받은 경우 Red만 킴
+		}
+		else if(ch == 'g')
+		{
+			digitalWrite(12,1);
+			digitalWrite(11,0);
+			digitalWrite(13,0);
+			Serial.println("Turned on Green"); // g 를 입력받은 경우 Green만 킴
+		}
+		else if(ch == 'b')
+		{
+			digitalWrite(13,1);
+			digitalWrite(11,0);
+			digitalWrite(12,0);
+			Serial.println("Turned on Blue"); // b 를 입력받은 경우 Blue만 킴
+		}
+	}
+}
+
+# 여러개를입력 (rgbrgbrgbrgbrgbrg 와 같은 방식) 하면 마지막에 입력된값 적용
+
+====================
+# 5V 와 No.13 핀 연결
+
+void setup() {
+	pinMode(13,OUTPUT);
+}
+
+void loop() {
+	digitalWrite(13,1);
+}
+
+# 불이 들어오지 않음
+
+void setup() {
+	pinMode(13,OUTPUT);
+}
+
+void loop() {
+	digitalWrite(13,0);
+}
+
+# 불이 들어옴
+
+# LED 긴쪽이 저항에 연결되고 저항 끝이 5V에 연결되어야 함 / LED 짧은쪽이 No.13 핀에 연결되어야함
+# GND는 0V의 전압을 가지고 있음 No.13 핀은 항상 양극에 해당
+# 5V가 아두이노 최대 전압이기 때문에 No.13핀과의 전압차를 주기 위해 Low(0) 으로 내려줘야함
+# 5V와 No.13핀을 둘다 5V로 간주해도 될듯함
+
+# 이부분 시험에 나옴
+
+====================
+# 스위치 사용
+
+void setup() {
+	pinMode(13,OUTPUT)
+}
+
+void loop() {
+	digitalWrite(13,1)
+}
+
+# 초등학교 회로 생각하면 쉬움
+# 단 스위치 구간에서 교차연결식으로 연결해야함
+
+## 스위치 눌러서 불 끄기
+# 스위치를 LED 와 저항 하단부쪽에 연결한다.
+# 스위치는 플로팅 상태이기 때문에 연결된쪽 (LED 방향) 으로 전압이 흐름
+# 스위치를 누르면 빠른경로를 찾아가기 때문에 LED 쪽으로 전류가 흐르지 않음
+# 따라서 스위치를 누르면 불이 역으로 꺼짐
+
+====================
+# 스위치 사용 (FULL_DOWN 저항)
+
+int pushButton = 8;
+void setup() {
+	pinMode(13, OUTPUT);
+	pinMode(pushButton, INPUT);
+	Serial.begin(9600);
+}
+
+void loop() {
+	int buttonState = digitalRead(pushButton);
+	if(buttonState == 1)
+	{
+		digitalWrite(13,1);
+		Serial.println(buttonState);
+		delay(1000);
+	}
+	else
+	{
+		digitalWrite(13,0);
+		Serial.println(buttonState);
+		delay(1000);
+	}
+}
+
+# 저항을 GND 쪽에 배선 (스위치쪽)
+# No.8 핀을 GND 라인에 배선 (스위치쪽)
+# 스위치쪽 배선을 반대로 하면 FULL_UP 저항
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+-----------------------------------------------------
+//디지털
+
+void setup() {
+  pinMode(13,OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13,HIGH);//LED 켜다
+  delay(1000);//1초
+  digitalWrite(13,LOW);//LED 끄다
+  delay(1000);//1초
+}
+
+//1000은 1초
+
+-----------------------------------------------------
+void setup() {
+  pinMode(13,OUTPUT);
+  pinMode(12,OUTPUT);
+  pinMode(5,OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13,HIGH);//LED 켜다
+  digitalWrite(5,HIGH);//LED 켜다
+  digitalWrite(12,HIGH);//LED 켜다
+  delay(1000);
+  digitalWrite(13,LOW);//LED 끄다
+  delay(1000);
+  digitalWrite(5,LOW);//LED 끄다
+  delay(2000);
+  digitalWrite(12,LOW);//LED 끄다
+  delay(3000);
+}
+//high=1, low=0
+-----------------------------------------------------------
+
+//아날로그 (0~255, 0~1023)
+
+void setup() {
+  pinMode(11,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(61,OUTPUT);
+}
+
+void loop() {
+  analogWrite(11,1);
+  delay(1000);
+  analogWrite(11,0);
+  delay(1000);
+  
+  analogWrite(10,100);
+  delay(1000);
+  analogWrite(10,0);
+  delay(1000);
+  
+  analogWrite(9,180);
+  delay(1000);
+  analogWrite(9,0);
+  delay(1000);
+  
+  analogWrite(6,255);
+  delay(1000);
+  analogWrite(6,0);
+  delay(1000);
+}
+//255가 가장 밝다
+
+--------------------------------------------------------------------------
+int num;
+
+void setup() {
+  pinMode(11,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(61,OUTPUT);
+}
+
+void loop() {
+
+  num=random(255);//0~255까지의 난수 발생
+  
+  for(int i=1;i<=255;i=i+26){  
+    analogWrite(11,i);
+    delay(num);
+    analogWrite(9,0);
+    delay(1000);
+    analogWrite(10,i);
+    delay(1000);
+    analogWrite(6,i);
+    delay(1000);
+    analogWrite(11,0);
+    delay(num);
+      for(int b=2;b<=4;b=b+10){
+        for (int s=100;s<=255;s=s+100){
+          analogWrite(9,s);
+          delay(1000);
+          analogWrite(6,0);
+          delay(num);
+          analogWrite(10,0);
+          delay(num);
+          analogWrite(6, s);
+          delay(1000);    
+        }
+        analogWrite(9,0);
+        delay(1000);
+        analogWrite(6,0);
+        delay(num);    
+        for (int a=100;a<+255;a=a+150){
+          analogWrite(10,0);
+          delay(num);    
+          analogWrite(11,a);
+          delay(1000);
+        }
+      }
+    analogWrite(11,0);
+    delay(1000);
+    analogWrite(9,i);
+    delay(num);
+    analogWrite(10,i);
+    delay(1000);
+
+  }
+}
+--------------------------------------------------------------------------------------------------------
+int num;
+int snum;
+int sum;
+
+void setup() {
+  pinMode(11,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(61,OUTPUT);
+}
+
+void loop() {
+
+  num=random(255);//0~255까지의 난수 발생
+  snum=random(8,20);//8부터 20보다 작은 난수 -> 8~19까지
+  sum=num+snum;
+  
+  for(int i=1;i<=255;i=i+26){  
+    analogWrite(11,i);
+    delay(num);
+    analogWrite(9,0);
+    delay(snum);
+    analogWrite(10,i);
+    delay(1000);
+    analogWrite(6,i);
+    delay(snum);
+    analogWrite(11,0);
+    delay(num);
+      for(int b=2;b<=4;b=b+10){
+        for (int s=100;s<=255;s=s+100){
+          analogWrite(9,s);
+          delay(sum);
+          analogWrite(6,0);
+          delay(num);
+          analogWrite(10,0);
+          delay(num);
+          analogWrite(6, s);
+          delay(1000);    
+        }
+        analogWrite(9,0);
+        delay(sum);
+        analogWrite(6,0);
+        delay(num);    
+        for (int a=100;a<+255;a=a+150){
+          analogWrite(10,0);
+          delay(num);    
+          analogWrite(11,a);
+          delay(snum);
+        }
+      }
+    analogWrite(11,0);
+    delay(sum);
+    analogWrite(9,i);
+    delay(num);
+    analogWrite(10,i);
+    delay(snum);
+
+  }
+}
+--------------------------------------------------------------------------------
+int v;//가변저항의 아날로그 읽는 값을 저장
+
+void setup() {
+  pinMode(11,OUTPUT);
+}
+
+void loop() {
+  v=analogRead(A0);
+  analogWrite(11,v);
+}
+---------------------------------------------------------
+//시리얼 모니터를 통해 확인 가능
+
+int v;//가변저항의 아날로그 읽는 값을 저장
+
+void setup() {
+  pinMode(11,OUTPUT);
+  Serial.begin(9600);//연결한 장치들간의 통신속도를 맞추기 위해 사용, 보통 9600을 사용
+}
+
+void loop() {
+  v=analogRead(A0);//가변저항을 읽는다
+  analogWrite(11,v);
+  Serial.println(v);
+  delay(1000);
+}
+------------------------------------------------------------------
+//5V 전압에 맞춤
+
+int v;//가변저항의 아날로그 읽는 값을 저장
+float voltage;
+
+void setup() {
+  pinMode(11,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  v=analogRead(A0);//가변저항을 읽는다
+  voltage=((float)v/1023)*5.0;
+  analogWrite(11,voltage);
+  Serial.println(voltage);
+  delay(1000);
+}
+------------------------------------------------------------------
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  Serial.println("hello andriod");//컴퓨터와 아두이노가 통신한다
+  delay(1000);
+}
+-----------------------------------------------
+//255V 전압에 맞춤
+
+int v;//가변저항의 아날로그 읽는 값을 저장
+int voltage;
+
+void setup() {
+  pinMode(11,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  v=analogRead(A0);//가변저항을 읽는다
+  voltage=((float)v/1023)*255;
+  analogWrite(11,voltage);
+  Serial.println(voltage);
+  delay(1000);
+}
+------------------------------------------------------------------------
+//시리얼 통신하기
+//pc와 아두이노가 통신함
+void setup() {
+pinMode(13,OUTPUT);
+Serial.begin(9600);
+}
+
+void loop() {
+  if(Serial.available()) //시리얼 통신이 가능하면
+  {
+    char ch=Serial.read(); //시리얼 데이터를 읽는다
+    if(ch=='s')
+    {
+      digitalWrite(13,1);
+      Serial.println("Turned on LED");
+    }
+    else if(ch=='q')
+    {
+      digitalWrite(13,0);
+      Serial.println("Turned off LED");
+    }
+    else
+    {
+      for(int i=1;i<=5;i++)
+      {
+        digitalWrite(13,1);
+        delay(100);
+        digitalWrite(13,0);
+        delay(100);
+      }
+    }
+  }
+}
+-------------------------------------------------------------------------------------
+//시리얼 통신하기
+//pc와 아두이노가 통신함
+void setup() {
+  pinMode(13,OUTPUT);
+  pinMode(12,OUTPUT);
+  pinMode(11,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if(Serial.available()) //시리얼 통신이 가능하면
+  {
+    char ch=Serial.read(); //시리얼 데이터를 읽는다
+    if(ch=='r')
+    {
+      digitalWrite(13,1);
+      digitalWrite(12,0);
+      digitalWrite(11,0);
+      Serial.println("Turned on LED (Red)");
+    }
+    else if(ch=='g')
+    {
+      digitalWrite(13,0);
+      digitalWrite(12,1);
+      digitalWrite(11,0);
+      Serial.println("Turned on LED (Green)");
+    }
+     else if(ch=='b')
+    {
+      digitalWrite(13,0);
+      digitalWrite(12,0);
+      digitalWrite(11,1);
+      Serial.println("Turned on LED (Blue)");
+    }
+    else
+    {
+      digitalWrite(13,0);
+      digitalWrite(12,0);
+      digitalWrite(11,0);
+    }
+  }
+}
+-------------------------------------------------------------------------
+void setup() {
+  pinMode(13,OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13,0); //기준점이 5V(아두이노 최대 전압)이므로 전압을 낮춰주어야 한다(전압의 차이가 있어야 전류가 흐르기 때문에,+는 5V/ -는 13)
+}
+-----------------------------------------------------------------------------
+int btnstate;
+
+void setup() {
+  pinMode(13,OUTPUT);
+  pinMode(7,INPUT); //7번핀은 입력
+}
+
+void loop() {
+  btnstate=digitalRead(7);
+  if(btnstate==1)
+    digitalWrite(13,0);
+  else
+    digitalWrite(13,1);     
+}
+----------------------------------------------------------------------
+//풀다운
+int btnstate;
+
+void setup() {
+  pinMode(13,OUTPUT);
+  pinMode(7,INPUT); //7번핀은 입력
+  Serial.begin(9600);
+}
+
+void loop() {
+  btnstate=digitalRead(7);
+  if(btnstate==1) //7번핀에 HIGH값이 입력되면
+  {
+    digitalWrite(13,1);
+    Serial.println(btnstate);
+    delay(100);
+  }
+  else //7번핀에 HIGH값이 입력되지 않으면
+  {
+    digitalWrite(13,0);
+    Serial.println(btnstate);
+    delay(100);
+  }  
+}
+-----------------------------------------------------------------------------
+풀다운
+int off,on;
+
+void setup() {
+  pinMode(13,OUTPUT);
+  pinMode(12,INPUT);//on
+  pinMode(2,INPUT);//off
+  Serial.begin(9600);
+}
+
+void loop() {
+  on=digitalRead(12);
+  off=digitalRead(2);
+  if(on){
+    digitalWrite(13,1);
+    Serial.println("on");
+  }
+  if(off){
+    digitalWrite(13,0);
+    Serial.println("off");
+  }
+}
+--------------------------------------------------------------------------------------
+풀업
+int off,on;
+
+void setup() {
+  pinMode(13,OUTPUT);
+  pinMode(12,INPUT);//on
+  pinMode(2,INPUT);//off
+  Serial.begin(9600);
+}
+
+void loop() {
+  on=digitalRead(12);
+  off=digitalRead(2);
+  if(!on){
+    digitalWrite(13,1);
+    Serial.println("on");
+  }
+  if(!off){
+    digitalWrite(13,0);
+    Serial.println("off");
+  }
+}
+--------------------------------------------------------------------------------------------
+삼색 LED
+가장 긴것을 GND라 하면
+RED GND GREEN BLUE
+---------------------------------------------------------------------------------------
+void setup() {
+  pinMode(9,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(11,OUTPUT);
+}
+
+void loop() {
+  for(int i=9;i<=11;i++){
+    analogWrite(i,random(255));
+    delay(500);
+  }
+}
+---------------------------------------------------------------------------------------
+void setup() {
+  pinMode(9,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(11,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if(Serial.available()){
+    char ch = Serial.read();
+    if(ch=='r'){
+      digitalWrite(11,1);
+      digitalWrite(10,0);
+      digitalWrite(9,0);
+      Serial.println("Turned on LED (Red)");
+    }
+    else if(ch=='g'){
+      digitalWrite(11,0);
+      digitalWrite(10,1);
+      digitalWrite(9,0);
+      Serial.println("Turned on LED (GREEN)");
+    }
+    else if(ch=='b'){
+      digitalWrite(11,0);
+      digitalWrite(10,0);
+      digitalWrite(9,1);
+      Serial.println("Turned on LED (BLUE)");
+    }
+    else{
+      digitalWrite(11,0);
+      digitalWrite(10,0);
+      digitalWrite(9,0);
+      Serial.println("NONE");
+    }
+  }
+}
+--------------------------------------------------------------------------
+소리내기(피에조)->단, 극성이 있음
+int buzzer=8;
+
+void setup() {
+  pinMode(buzzer,OUTPUT);  
+}
+
+void loop() {
+  digitalWrite(buzzer,HIGH);
+  delay(1000);
+  digitalWrite(buzzer,LOW);
+  delay(1000);
+}
+
+--------------------------------------------------------------------------
+tone(핀번호,주파수)
+tone(핀번호,주파수,출력시간)
+noTone(중단할 핀번호)
+
+int numTones=8;
+int speakerPin=8;
+int tones[]={262,294,330,349,392,440,494,523};//도레미파솔라시도
+
+void setup() {
+  pinMode(8,OUTPUT);  
+}
+
+void loop() {
+  for(int i=0;i<9;i++){
+    tone(8,tones[i],1000);
+    delay(3000);
+  }
+}
+---------------------------------------------------------------------------
+#define NOTE_B0  31
+#define NOTE_C1  33
+#define NOTE_CS1 35
+#define NOTE_D1  37
+#define NOTE_DS1 39
+#define NOTE_E1  41
+#define NOTE_F1  44
+#define NOTE_FS1 46
+#define NOTE_G1  49
+#define NOTE_GS1 52
+#define NOTE_A1  55
+#define NOTE_AS1 58
+#define NOTE_B1  62
+#define NOTE_C2  65
+#define NOTE_CS2 69
+#define NOTE_D2  73
+#define NOTE_DS2 78
+#define NOTE_E2  82
+#define NOTE_F2  87
+#define NOTE_FS2 93
+#define NOTE_G2  98
+#define NOTE_GS2 104
+#define NOTE_A2  110
+#define NOTE_AS2 117
+#define NOTE_B2  123
+#define NOTE_C3  131
+#define NOTE_CS3 139
+#define NOTE_D3  147
+#define NOTE_DS3 156
+#define NOTE_E3  165
+#define NOTE_F3  175
+#define NOTE_FS3 185
+#define NOTE_G3  196
+#define NOTE_GS3 208
+#define NOTE_A3  220
+#define NOTE_AS3 233
+#define NOTE_B3  247
+#define NOTE_C4  262
+#define NOTE_CS4 277
+#define NOTE_D4  294
+#define NOTE_DS4 311
+#define NOTE_E4  330
+#define NOTE_F4  349
+#define NOTE_FS4 370
+#define NOTE_G4  392
+#define NOTE_GS4 415
+#define NOTE_A4  440
+#define NOTE_AS4 466
+#define NOTE_B4  494
+#define NOTE_C5  523
+#define NOTE_CS5 554
+#define NOTE_D5  587
+#define NOTE_DS5 622
+#define NOTE_E5  659
+#define NOTE_F5  698
+#define NOTE_FS5 740
+#define NOTE_G5  784
+#define NOTE_GS5 831
+#define NOTE_A5  880
+#define NOTE_AS5 932
+#define NOTE_B5  988
+#define NOTE_C6  1047
+#define NOTE_CS6 1109
+#define NOTE_D6  1175
+#define NOTE_DS6 1245
+#define NOTE_E6  1319
+#define NOTE_F6  1397
+#define NOTE_FS6 1480
+#define NOTE_G6  1568
+#define NOTE_GS6 1661
+#define NOTE_A6  1760
+#define NOTE_AS6 1865
+#define NOTE_B6  1976
+#define NOTE_C7  2093
+#define NOTE_CS7 2217
+#define NOTE_D7  2349
+#define NOTE_DS7 2489
+#define NOTE_E7  2637
+#define NOTE_F7  2794
+#define NOTE_FS7 2960
+#define NOTE_G7  3136
+#define NOTE_GS7 3322
+#define NOTE_A7  3520
+#define NOTE_AS7 3729
+#define NOTE_B7  3951
+#define NOTE_C8  4186
+#define NOTE_CS8 4435
+#define NOTE_D8  4699
+#define NOTE_DS8 4978
+
+C4 도
+D4 레
+E4 미
+F4 파
+G4 솔
+A4 라
+B4 시
+
+C5 도
+---------------------------------------------------------------------------
+int speakerPin=8;
+int numTones=24;
+int tones[]={392,392,440,440,392,392,330,392,392,330,330,294,392,392,440,440,392,392,330,392,330,294,330,262};//도레미파솔라시도
+int noteDuration[]={1,1,1,1,//1박자 : 4 => 4박자
+                      1,1,2,//1박자 : 2, 2박자 : 1 => 4박자
+                      1,1,1,1,
+                      4,
+                      1,1,1,1,
+                      1,1,2,
+                      1,1,1,1,
+                      4};
+                      
+void setup() {
+  pinMode(speakerPin,OUTPUT);  
+}
+
+void loop() {
+  for(int i=0;i<numTones;i++){
+    int mTime=100*noteDuration[i];
+    tone(speakerPin,tones[i],mTime);
+    delay(400);
+  }
+  //dealy(1000);
+  noTone(speakerPin);
+}
+---------------------------------------------------------------------------
+초음파 센서
+trig -> OUTPUT
+echo ->  INPUT
+
+vcc  5v
+trig 13
+echo 12
+gnd gnd
+
+초음파 센서 거리인식
+#define trigPin 13 
+#define echoPin 12 
+long microsecondsToInches(long microseconds)
+{
+    return microseconds / 74 / 2;
+}
+
+long microsecondsToCentimeters(long microseconds)
+{ 
+    return microseconds / 29 / 2;
+}
+
+void setup() 
+{ 
+    Serial.begin (9600); 
+    pinMode(trigPin, OUTPUT); 
+    pinMode(echoPin, INPUT); 
+} 
+void loop() 
+{ 
+    long duration, inches, cm;
+
+    digitalWrite(trigPin, LOW);
+    delayMicroseconds(2); 
+    digitalWrite(trigPin, HIGH);
+    delayMicroseconds(10); 
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH); 
+
+    // convert the time into a distance
+    inches = microsecondsToInches(duration);
+    cm = microsecondsToCentimeters(duration);
+    Serial.print(inches);
+    Serial.print("inch, ");
+    Serial.print(cm);
+    Serial.println(" cm"); 
+
+    delay(1000); 
+}
+-------------------------------------------------------------
+거리에 따라 초음파 센서가 반응하게 하기
+
+#define trig 13 
+#define echo 12 
+
+void setup() 
+{ 
+    pinMode(13, OUTPUT); 
+    pinMode(12, INPUT); 
+    pinMode(8,OUTPUT);//피에조스피커
+} 
+void loop() 
+{ 
+    digitalWrite(trig,HIGH);//트리거 신호 ON
+    delayMicroseconds(10);//0.00001초 대기
+    digitalWrite(trig, LOW);//트리거 신호 OFF
+
+    long distance=pulseIn(echo,trig)/29/2;//초음파 값을 cm로 변환
+    if(distance<10){//10cm 이내
+      tone(8,262,20);
+    }
+    delay(100);
+}
+-------------------------------------------------------------
+#define trig 13 
+#define echo 12 
+
+void setup() 
+{ 
+    pinMode(13,OUTPUT); 
+    pinMode(12,INPUT); 
+    pinMode(8,OUTPUT);//피에조스피커
+    pinMode(5,OUTPUT);
+    pinMode(4,OUTPUT);
+    pinMode(3,OUTPUT);
+} 
+void loop() 
+{ 
+    digitalWrite(trig,HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trig, LOW);
+  
+  long distance  = pulseIn(echo,trig)/29/2;
+  
+  if(distance<10){
+    tone(8,262,20);
+    digitalWrite(5,HIGH);
+    digitalWrite(4,LOW);
+    digitalWrite(3,LOW);
+    delay(1000);
+  }
+  else if(distance>=10 && distance<20){
+    digitalWrite(5,LOW);
+    digitalWrite(4,HIGH);
+    digitalWrite(3,LOW);
+    delay(1000);
+  }
+  else if(distance>=20 && distance<30){
+    digitalWrite(5,LOW);
+    digitalWrite(4,LOW);
+    digitalWrite(3,HIGH);
+    delay(1000);
+  }
+  else{
+    digitalWrite(5,LOW);
+    digitalWrite(4,LOW);
+    digitalWrite(3,LOW);
+    delay(1000);
+  }
+}
+-------------------------------------------------------------
+7 segment
+
+0~9까지 나오게 하기
+
+void setup() {
+  for(int i=2;i<10;i++){
+    pinMode(i,OUTPUT);
+  }
+  digitalWrite(9,0);
+}
+
+void loop() {
+  //0
+  digitalWrite(2,0);
+  digitalWrite(3,1);
+  digitalWrite(4,1);
+  digitalWrite(5,1);
+  digitalWrite(6,1);
+  digitalWrite(7,1);
+  digitalWrite(8,1);
+  delay(1000);
+  //1
+  digitalWrite(2,0);
+  digitalWrite(3,0);
+  digitalWrite(4,0);
+  digitalWrite(5,0);
+  digitalWrite(6,0);
+  digitalWrite(7,1);
+  digitalWrite(8,1);
+  delay(1000);
+  //2
+  digitalWrite(2,1);
+  digitalWrite(3,0);
+  digitalWrite(4,1);
+  digitalWrite(5,1);
+  digitalWrite(6,1);
+  digitalWrite(7,1);
+  digitalWrite(8,0);
+  delay(1000);
+  //3
+  digitalWrite(2,1);
+  digitalWrite(3,0);
+  digitalWrite(4,0);
+  digitalWrite(5,1);
+  digitalWrite(6,1);
+  digitalWrite(7,1);
+  digitalWrite(8,1);
+  delay(1000);
+  //4
+  digitalWrite(2,1);
+  digitalWrite(3,1);
+  digitalWrite(4,0);
+  digitalWrite(5,0);
+  digitalWrite(6,0);
+  digitalWrite(7,1);
+  digitalWrite(8,1);
+  delay(1000);
+  //5
+  digitalWrite(2,1);
+  digitalWrite(3,1);
+  digitalWrite(4,0);
+  digitalWrite(5,1);
+  digitalWrite(6,1);
+  digitalWrite(7,0);
+  digitalWrite(8,1);
+  delay(1000);
+  //6
+  digitalWrite(2,1);
+  digitalWrite(3,1);
+  digitalWrite(4,1);
+  digitalWrite(5,1);
+  digitalWrite(6,1);
+  digitalWrite(7,0);
+  digitalWrite(8,1);
+  delay(1000);
+  //7
+  digitalWrite(2,0);
+  digitalWrite(3,1);
+  digitalWrite(4,0);
+  digitalWrite(5,0);
+  digitalWrite(6,1);
+  digitalWrite(7,1);
+  digitalWrite(8,1);
+  delay(1000);
+  //8
+  digitalWrite(2,1);
+  digitalWrite(3,1);
+  digitalWrite(4,1);
+  digitalWrite(5,1);
+  digitalWrite(6,1);
+  digitalWrite(7,1);
+  digitalWrite(8,1);
+  delay(1000);
+  //9
+  digitalWrite(2,1);
+  digitalWrite(3,1);
+  digitalWrite(4,0);
+  digitalWrite(5,1);
+  digitalWrite(6,1);
+  digitalWrite(7,1);
+  digitalWrite(8,1);
+  delay(1000);
+}
+-------------------------------------------------------------
+0~9까지 나오게 하기
+
+int digits[10][7]={
+  {0,1,1,1,1,1,1},
+  {0,0,0,0,0,1,1},
+  {1,0,1,1,1,1,0},
+  {1,0,0,1,1,1,1},
+  {1,1,0,0,0,1,1},
+  {1,1,0,1,1,0,1},
+  {1,1,1,1,1,0,1},
+  {0,1,0,0,1,1,1},
+  {1,1,1,1,1,1,1},
+  {1,1,0,1,1,1,1}
+  };
+int i;
+
+void setup() {
+  for(int i=2;i<10;i++){
+      pinMode(i,OUTPUT);
+    }
+    digitalWrite(9,0);
+}
+
+
+void loop() {
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[0][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[1][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[2][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[3][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[4][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[5][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[6][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[7][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[8][i-2]);
+    delay(50);
+  }
+  delay(1000);
+  
+  for(i=2;i<=8;i++){
+    digitalWrite(i,digits[9][i-2]);
+    delay(50);
+  }
+  delay(1000);
+}
+-------------------------------------------------------------
+0~9까지 나오게 하기
+
+int digits[10][7]={
+  {0,1,1,1,1,1,1},
+  {0,0,0,0,0,1,1},
+  {1,0,1,1,1,1,0},
+  {1,0,0,1,1,1,1},
+  {1,1,0,0,0,1,1},
+  {1,1,0,1,1,0,1},
+  {1,1,1,1,1,0,1},
+  {0,1,0,0,1,1,1},
+  {1,1,1,1,1,1,1},
+  {1,1,0,1,1,1,1}
+  };
+int i, j;
+
+void setup() {
+  for(int i=2;i<10;i++){
+    pinMode(i,OUTPUT);
+  }
+    digitalWrite(9,0);
+}
+
+
+void loop() {
+  for(j=0;j<10;j++){
+    for(i=2;i<=8;i++){
+      digitalWrite(i,digits[j][i-2]);
+    }
+    delay(1000);
+  }
+}
+-------------------------------------------------------------
+스위치를 누를 때마다 카운트 세기
+
+int digits[10][7]={
+  {0,1,1,1,1,1,1},
+  {0,0,0,0,0,1,1},
+  {1,0,1,1,1,1,0},
+  {1,0,0,1,1,1,1},
+  {1,1,0,0,0,1,1},
+  {1,1,0,1,1,0,1},
+  {1,1,1,1,1,0,1},
+  {0,1,0,0,1,1,1},
+  {1,1,1,1,1,1,1},
+  {1,1,0,1,1,1,1}
+  };
+int i;
+
+void setup() {
+  for(int i=2;i<10;i++){
+    pinMode(i,OUTPUT);
+  }
+    digitalWrite(9,0);
+    pinMode(13,INPUT);
+}
+
+
+void loop() {
+  int j=0;
+  
+  for(;;){
+    delay(200);
+    
+    if(digitalRead(13)==0){
+      for(i=2;i<=8;i++){
+        digitalWrite(i,digits[j][i-2]);
+      }
+      j++; -> ex) for문에서 j=0이면 j=1로 변함
+      if(j>9){
+        j=0;
+      }
+    }
+  }
+}
+----------------------------------------------------------------------
+스위치를 누를 때마다 카운트 세기 (13->증가, 12->감소)
+
+int digits[10][7]={
+  {0,1,1,1,1,1,1},
+  {0,0,0,0,0,1,1},
+  {1,0,1,1,1,1,0},
+  {1,0,0,1,1,1,1},
+  {1,1,0,0,0,1,1},
+  {1,1,0,1,1,0,1},
+  {1,1,1,1,1,0,1},
+  {0,1,0,0,1,1,1},
+  {1,1,1,1,1,1,1},
+  {1,1,0,1,1,1,1}
+  };
+int i;
+
+void setup() {
+  for(int i=2;i<10;i++){
+    pinMode(i,OUTPUT);
+  }
+  digitalWrite(9,0);
+  pinMode(13,INPUT);
+  pinMode(12,INPUT);
+}
+
+
+void loop() {
+  int j=0;
+  
+  for(;;){
+    delay(200);
+    if(digitalRead(13)==0){
+      j++;
+      if(j>9){
+        j=0;
+      }
+      for(i=2;i<=8;i++){
+        digitalWrite(i,digits[j][i-2]);
+      }
+    }
+    delay(200);
+    if(digitalRead(12)==0){
+      j--;
+      if(j<0){
+        j=9;
+      }
+      for(i=2;i<=8;i++){
+        digitalWrite(i,digits[j][i-2]);
+      }
+    }
+  }
+}
+-----------------------------------------------------------------------
+숙제
+
+int digits[10][7]={
+  {0,1,1,1,1,1,1},
+  {0,0,0,0,0,1,1},
+  {1,0,1,1,1,1,0},
+  {1,0,0,1,1,1,1},
+  {1,1,0,0,0,1,1},
+  {1,1,0,1,1,0,1},
+  {1,1,1,1,1,0,1},
+  {0,1,0,0,1,1,1},
+  {1,1,1,1,1,1,1},
+  {1,1,0,1,1,1,1}
+  };
+int i;
+
+void setup() {
+  for(int i=2;i<10;i++){
+    pinMode(i,OUTPUT);
+  }
+  digitalWrite(9,0);
+  pinMode(13,INPUT);
+  pinMode(12,INPUT);
+  pinMode(11,OUTPUT);
+}
+
+
+void loop() {
+  int j=0;
+  
+  for(;;){
+    delay(200);
+    if(digitalRead(13)==0){
+      j++;
+      if(j>9){
+        j=0;
+      }
+      for(i=2;i<=8;i++){
+        digitalWrite(i,digits[j][i-2]);
+      }
+      tone(11,262,500);
+    }
+    delay(200);
+    if(digitalRead(12)==0){
+      j--;
+      if(j<0){
+        j=9;
+      }
+      for(i=2;i<=8;i++){
+        digitalWrite(i,digits[j][i-2]);
+      }
+      tone(11,440,500);
+    }
+  }
+}
+-----------------------------------------------------------------------
+3D 7segment
+3칸 모두 0~9까지 나오게 하기
+
+int digits[10][7]={
+  {0,0,0,0,0,0,1},
+  {1,0,0,1,1,1,1},
+  {0,0,1,0,0,1,0},
+  {0,0,0,0,1,1,0},
+  {1,0,0,1,1,0,0},
+  {0,1,0,0,1,0,0},
+  {0,1,0,0,0,0,0},
+  {0,0,0,1,1,1,1},
+  {0,0,0,0,0,0,0},
+  {0,0,0,1,1,0,0}
+  };
+
+void setup() {
+  for(int i=3;i<=13;i++){
+    pinMode(i,OUTPUT);
+  }
+  digitalWrite(13,1);//digit1
+  digitalWrite(3,1);//digit2
+  digitalWrite(4,1);//digit3
+  digitalWrite(12,0);//DP pin high 대신 low면 도트가 켜진다
+}
+
+void loop() {
+  for(int j=0;j<10;j++){//세그먼트 숫자표현
+    for(int i=5;i<12;i++){//핀번호
+      digitalWrite(i,digits[j][i-5]);//시작위치[0][0]으로 맞춘다
+    }
+    delay(1000);
+  }
+}
+-----------------------------------------------------------------------
+시리얼 모니터에 입력한 수가 나오게 하기(한자리)
+
+int digits[10][7]={
+  {0,0,0,0,0,0,1},
+  {1,0,0,1,1,1,1},
+  {0,0,1,0,0,1,0},
+  {0,0,0,0,1,1,0},
+  {1,0,0,1,1,0,0},
+  {0,1,0,0,1,0,0},
+  {0,1,0,0,0,0,0},
+  {0,0,0,1,1,1,1},
+  {0,0,0,0,0,0,0},
+  {0,0,0,1,1,0,0}
+  };
+
+void setup() {
+  for(int i=3;i<=13;i++){
+    pinMode(i,OUTPUT);
+  }
+  digitalWrite(13,1);//digit1
+  //digitalWrite(3,1);//digit2
+  //digitalWrite(4,1);//digit3
+  digitalWrite(12,1);
+  Serial.begin(9600);
+}
+
+int num=1;
+void loop() {
+  if(Serial.available()){
+    num=Serial.parseInt();
+  }
+  for(int i=5;i<12;i++){
+      digitalWrite(i,digits[num][i-5]);
+  }
+}
+-----------------------------------------------------------------------
+시리얼 모니터에 입력한 수가 나오게 하기(두 자리)
+
+int digits[10][7]={
+  {0,0,0,0,0,0,1},
+  {1,0,0,1,1,1,1},
+  {0,0,1,0,0,1,0},
+  {0,0,0,0,1,1,0},
+  {1,0,0,1,1,0,0},
+  {0,1,0,0,1,0,0},
+  {0,1,0,0,0,0,0},
+  {0,0,0,1,1,1,1},
+  {0,0,0,0,0,0,0},
+  {0,0,0,1,1,0,0}
+  };
+
+void setup() {
+  for(int i=3;i<=13;i++){
+    pinMode(i,OUTPUT);
+  }
+  digitalWrite(13,0);//digit1
+  digitalWrite(3,0);//digit2
+  digitalWrite(4,0);//digit3
+  digitalWrite(12,1);//DP pin high 대신 low면 도트가 켜진다
+  Serial.begin(9600);
+}
+
+int num, num2, num3;//num2 : 십의 자리, num3 : 일의 자리
+void loop() {
+  if(Serial.available()){
+    num=Serial.parseInt();
+  }
+  num2=num/10;
+  num3=num%10;
+
+  digitalWrite(3,HIGH);
+  digitalWrite(4,LOW);
+  for(int i=5;i<12;i++){
+     digitalWrite(i,digits[num2][i-5]);
+  }
+  delay(10);
+
+  digitalWrite(3,LOW);
+  digitalWrite(4,HIGH);
+  for(int i=5;i<12;i++){
+    digitalWrite(i,digits[num3][i-5]);
+  }
+  delay(10);
+  digitalWrite(4,LOW);
+}
+-----------------------------------------------------------------------
+시리얼 모니터에 입력한 수가 나오게 하기(세자리)
+
+
+int digits[10][7]={
+  {0,0,0,0,0,0,1},
+  {1,0,0,1,1,1,1},
+  {0,0,1,0,0,1,0},
+  {0,0,0,0,1,1,0},
+  {1,0,0,1,1,0,0},
+  {0,1,0,0,1,0,0},
+  {0,1,0,0,0,0,0},
+  {0,0,0,1,1,1,1},
+  {0,0,0,0,0,0,0},
+  {0,0,0,1,1,0,0}
+  };
+
+void setup() {
+  for(int i=3;i<=13;i++){
+    pinMode(i,OUTPUT);
+  }
+  digitalWrite(13,0);//digit1
+  digitalWrite(3,0);//digit2
+  digitalWrite(4,0);//digit3
+  digitalWrite(12,1);//DP pin high 대신 low면 도트가 켜진다
+  Serial.begin(9600);
+}
+
+int num, num2, num3, num4;//num2 : 백의 자리, num3 : 십의 자리, num4 : 일의 자리
+void loop() {
+  if(Serial.available()){
+    num=Serial.parseInt();
+  }
+  num2=num/100;
+  num3=num%100/10;
+  num4=num%100%10;
+
+  digitalWrite(13,HIGH);
+  digitalWrite(3,LOW);
+  digitalWrite(4,LOW);
+  for(int i=5;i<12;i++){
+     digitalWrite(i,digits[num2][i-5]);
+  }
+  delay(5);
+
+  digitalWrite(13,LOW);
+  digitalWrite(3,HIGH);
+  digitalWrite(4,LOW);
+  for(int i=5;i<12;i++){
+    digitalWrite(i,digits[num3][i-5]);
+  }
+  delay(5);
+
+  digitalWrite(13,LOW);
+  digitalWrite(3,LOW);
+  digitalWrite(4,HIGH);
+  for(int i=5;i<12;i++){
+    digitalWrite(i,digits[num4][i-5]);
+  }
+  delay(5);
+}
+-----------------------------------------------------------------------
+조도센서(밝기에 따라)
+vcc 5V
+out A0
+GND gnd
+
+
+int valueA0;
+
+void setup() {
+  pinMode(11,OUTPUT);
+  pinMode(A0,INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  valueA0=analogRead(A0);//조도센서 입력
+  Serial.println(valueA0);
+  delay(1000);
+
+  if(valueA0>=500){
+    digitalWrite(11,1);
+  }
+  else{
+    digitalWrite(11,0);
+  }
+}
+-----------------------------------------------------------------------
+//어두어질수록 밝아진다는 것은 저항이 약해진다
+int valueA0;
+int valueA00;
+
+void setup() {
+  pinMode(11,OUTPUT);
+  pinMode(A0,INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  valueA0=analogRead(A0);//조도센서 입력
+  valueA00=valueA0/4;
+  Serial.println(valueA00);
+  delay(100);
+  analogWrite(11,valueA00);
+}
+-----------------------------------------------------------------------
+int valueA0;
+int valueA00;
+
+void setup() {
+  pinMode(11,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(A0,INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  valueA0=analogRead(A0);//조도센서 입력
+  valueA00=valueA0/4;
+  Serial.println(valueA00);
+  delay(100);
+
+  if(valueA00>=240){
+    analogWrite(11,255);
+    analogWrite(10,0);
+    analogWrite(9,0);
+  }
+  else if(valueA00>=200 && valueA00<=240){
+    analogWrite(11,0);
+    analogWrite(10,255);
+    analogWrite(9,0);
+  }
+  else if(valueA00>=160 && valueA00<=200){
+    analogWrite(11,0);
+    analogWrite(10,0);
+    analogWrite(9,255);
+  }
+  else if(valueA00>=120 && valueA00<=160){
+    analogWrite(11,255);
+    analogWrite(10,255);
+    analogWrite(9,255);
+  }
+  else{
+    analogWrite(11,0);
+    analogWrite(10,0);
+    analogWrite(9,0);
+  }
+}
+-----------------------------------------------------------------------
+온습도 센서
+vcc 5V
+data 핀번호
+GND gnd
+
+#include <DHT.h>
+#define DHTPIN 12//핀 설정
+#define DHTTYPE DHT11//DHT 센서 종류 설정 (DHTTYPE에 DHT11를 저장해 사용)
+
+DHT dht(DHTPIN, DHTTYPE);
+void setup() {
+  Serial.begin(9600);
+  Serial.println("DHT11 TEST");
+  dht.begin();
+}
+
+void loop() {
+  //센서의 온도오 습도를 일기
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+
+  if(isnan(t) || isnan(h)){
+    //isnan=isNotANumber
+    //값 읽기 실패시 시리어 모니터 출력
+    Serial.println("Failed to read from DHT");
+  }
+  else{
+    Serial.print("Humidity: ");
+    Serial.print(h);
+    Serial.print("%\t");
+    Serial.print("Temperature: ");
+    Serial.print(t);
+    Serial.println(" 'c");
+  }
+  delay(2000);
+}
+
+-----------------------------------------------------------------------
+기울기 센서
+vcc 5V
+GND gnd
+D0 digital
+
+int t=7;
+void setup() {
+  pinMode(7,INPUT);
+  pinMode(13,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading=digitalRead(t);
+  Serial.println(reading);
+  delay(1000);
+  if(reading==HIGH){
+    digitalWrite(13,HIGH);
+  }
+  else{
+    digitalWrite(13,LOW);
+  }
+}
+-----------------------------------------------------------------------
+화염 센서
+vcc 5V
+GND gnd
+D0 digital
+
+int t=7;
+void setup() {
+  pinMode(7,INPUT);
+  pinMode(13,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading=digitalRead(t);
+  Serial.println(reading);
+  delay(1000);
+  if(reading==HIGH){
+    digitalWrite(13,LOW);
+  }
+  else{
+    digitalWrite(13,HIGH);
+  }
+}
+-----------------------------------------------------------------------
+진동 센서
+vcc 5V
+GND gnd
+D0 digital
+
+int t=7;
+void setup() {
+  pinMode(7,INPUT);
+  pinMode(13,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int reading=digitalRead(t);
+  Serial.println(reading);
+  delay(100);
+  if(reading==HIGH){
+    digitalWrite(13,HIGH);
+  }
+  else{
+    digitalWrite(13,LOW);
+  }
+}
+-----------------------------------------------------------------------
+LCD에 출력하기
+
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);//RS,E,D4,D5,D6,D7
+
+void setup() {
+  lcd.begin(16,2);//2행 16열
+  lcd.print("0123456789012345");//문자열 출력
+}
+
+void loop() {
+  lcd.setCursor(2,1);//3열 2행->행과 열 모두 배열처럼 0부터 시작, 오른쪽:행/왼쪽:열
+  lcd.print("Dongyang Mirae");
+}
+-----------------------------------------------------------------------
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);//RS,E,D4,D5,D6,D7
+int start=0;
+char a;
+
+void setup() {
+  lcd.begin(16,2);//2행 16열
+  Serial.begin(9600)
+;}
+
+void loop() {
+  if(start==0){
+    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.print("type in");
+    delay(1000);
+    lcd.clear();
+    lcd.print("serial monitor");
+    delay(1000);
+  }
+
+  if(Serial.available()){
+    start=1;
+    delay(100);
+    lcd.clear();
+    while(Serial.available()>0){
+      lcd.write(a=Serial.read());
+      Serial.write(a);//ascii 코드값
+    }
+  }
+}
+-----------------------------------------------------------------------
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);//RS,E,D4,D5,D6,D7
+char thischar='A';
+
+void setup() {
+  lcd.begin(16,2);//2행 16열
+}
+
+void loop() {
+  lcd.setCursor(0,0);
+  for(thischar='A';thischar<='N';thischar++){
+    lcd.leftToRight();
+    lcd.print(thischar);
+    delay(500);
+  }
+  
+  lcd.setCursor(15,1);
+  for(thischar='O';thischar<='Z';thischar++){
+    lcd.rightToLeft();
+    lcd.print(thischar);
+    delay(500);
+  }
+}
+-----------------------------------------------------------------------
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);//RS,E,D4,D5,D6,D7
+
+void setup() {
+  lcd.begin(16,2);//2행 16열
+}
+
+void loop() {
+  lcd.setCursor(0,0);
+  for(int thischar=0;thischar<=10;thischar++){
+    lcd.print(thischar);
+    delay(300);
+  }
+  
+  lcd.setCursor(0,1);
+  for(char thischar='a';thischar<='p';thischar++){
+    lcd.print(thischar);
+    delay(300);
+  }
+  lcd.autoscroll();
+  //lcd.noAutoscroll();
+}
+-----------------------------------------------------------------------
+온도, 습도를 LCD에 출력하기
+
+#include <DHT.h>
+#define DHTPIN 7
+#define DHTTYPE DHT11
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);//RS,E,D4,D5,D6,D7
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  lcd.begin(16,2);//2행 16열
+  dht.begin();
+}
+
+void loop() {
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  
+  lcd.setCursor(0,0);
+  lcd.print("Humidity: ");
+  lcd.print(h);
+  lcd.setCursor(0,1);
+  lcd.print("Temper: ");
+  lcd.print(t);
+  lcd.print(" 'c");
+  delay(2000);
+}
+-----------------------------------------------------------------------
+숙제
+
+#include <DHT.h>
+#define DHTPIN 7
+#define DHTTYPE DHT11
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(13,12,11,10,9,8);//RS,E,D4,D5,D6,D7
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup() {
+  pinMode(6,INPUT);//화염
+  pinMode(5,OUTPUT);//피에조
+  pinMode(4,OUTPUT);//LED
+  lcd.begin(16,2);
+  dht.begin();
+}
+
+void loop() {
+  int reading=digitalRead(6);
+  
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  
+  if(reading==HIGH){
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Hu: ");
+    lcd.print(h);
+    lcd.print("%");
+    lcd.setCursor(0,1);
+    lcd.print("Temper: ");
+    lcd.print(t);
+    lcd.print(" 'c");
+    delay(100);
+  }
+  else{
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("EMERGENCY!!!");
+    tone(5,342,500);
+    digitalWrite(4,HIGH);
+    delay(100);
+    digitalWrite(4,LOW);
+    delay(100);
+  }
+}
+-----------------------------------------------------------------------
+Servo motor
+갈색 GND
+빨강 5V
+노랑 입력 핀
+
+#include <Servo.h>
+Servo myservo;
+int p=0;
+
+void setup() {
+  myservo.attach(6);
+}
+
+void loop() {
+  for(p=0;p<=180;p++){
+    myservo.write(p);
+    delay(10);
+  }
+}
+-----------------------------------------------------------------------
+DC motor
+
+//정방향, 역방향으로 회전
+int in_a=8;
+int in_b=4;
+int en_a=9;
+
+void setup() {
+  pinMode(in_a,OUTPUT);
+  pinMode(in_b,OUTPUT);  
+}
+
+void loop() {
+  //Forward
+  digitalWrite(in_a,1);
+  digitalWrite(in_b,0);
+  analogWrite(en_a, 250);
+  delay(2000);
+  //Backward
+  digitalWrite(in_a,0);
+}
+-----------------------------------------------------------------------
+// 배선이 잘되었으면 블루투스 모듈이 적색으로 깜박인다.
+#include <SoftwareSerial.h>
+SoftwareSerial BT_Serial(2,3);//rx,tx
+
+int bluetooth_Tx = 2;
+int bluetooth_Rx = 3;
+int LED = 9;
+
+SoftwareSerial bluetooth(bluetooth_Tx, bluetooth_Rx);
+
+void setup()
+{
+  Serial.begin(9600);  
+  delay(100);
+  bluetooth.begin(9600);
+  pinMode(LED, OUTPUT);
+}
+
+void loop()
+{
+  char cmd;
+  if(bluetooth.available() )
+  {
+    cmd = (char)bluetooth.read();
+    Serial.print("Command = ");
+    Serial.println(cmd);
+    
+    if( cmd == '1' )
+    {
+      Serial.println("LED ON");
+      digitalWrite(LED, HIGH);
+    }
+    
+    if( cmd == '2' )
+    {
+      Serial.println("LED OFF");
+      digitalWrite(LED, LOW);
+    }    
+  }
+}
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
+
+-----------------------------------------------------------------------
